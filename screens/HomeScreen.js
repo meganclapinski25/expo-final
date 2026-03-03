@@ -4,7 +4,8 @@ export default function HomeScreen(){
     return (
     <View style={styles.container}>
         <Text style={styles.label}> Balance</Text>
-
+        <Text style={styles.balance}>$1,240.00</Text>
+        
     </View>
     );
 }
