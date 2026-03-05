@@ -4,19 +4,42 @@ import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addTransaction, loadTransactions } from '../slices/transactionSlice';
 
-const dispatch = useDispatch();
-const {item, status} = useSelector(state => state.transactions);
-const [label, setLabel] = useState('');
-const [amount, setAmount] = useState('');
-const [category, setCategory] = useState('Food');
-const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Other'];
+
 export default function TransactionsScreen(){
+
+    const dispatch = useDispatch();
+    const {items , status} = useSelector(state => state.transactions);
+    const [label, setLabel] = useState('');
+    const [amount, setAmount] = useState('');
+    const [category, setCategory] = useState('Food');
+    const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Other'];
+    const handleAdd = async () => {
+        if (!label || !amount) return;
+        const newTransaction = {
+          id: Date.now().toString(),
+          label,
+          amount: parseFloat(amount),
+          category,
+          date: new Date().toLocaleDateString(),
+        };
+        dispatch(addTransaction(newTransaction));
+        const updated = [newTransaction, ...items];
+        await AsyncStorage.setItem('transactions', JSON.stringify(updated));
+        setLabel('');
+        setAmount('');
+      };
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Transactions</Text>
-            <Text style={styles.sub}>Transactions will appear here</Text>
+          <Text style={styles.title}>Transactions</Text>
+      
+          {/* Inputs */}
+          <TextInput style={styles.input} placeholder="Label" value={label} onChangeText={setLabel} />
+          <TextInput style={styles.input} placeholder="Amount" keyboardType="decimal-pad" value={amount} onChangeText={setAmount} />
+      
+         
         </View>
-    )
+      );
 }
 
 const styles = StyleSheet.create({
