@@ -46,6 +46,14 @@ export default function BudgetScreen() {
   const totalSpent = items.reduce((sum, t) => sum + t.amount, 0);
   const remaining = (parseFloat(budget) || 0) - totalSpent;
 
+  const percentUsed = parseFloat(budget) > 0 ? (totalSpent / parseFloat(budget)) * 100 : 0;
+
+    const remainingColor = percentUsed >= 75
+    ? theme.danger
+    : percentUsed >= 50
+    ? theme.warning
+    : theme.success;
+
   const chartData = Object.entries(byCategory).map(([cat, amount]) => ({
     value: amount,
     color: colors[cat] || '#ccc',
@@ -71,7 +79,13 @@ export default function BudgetScreen() {
       ) : (
         <TouchableOpacity onPress={() => { setEditing(true); setInputVal(budget); }}>
           <Text style={styles.setLimit}>
-            {budget ? `Monthly budget: $${budget} — tap to edit` : 'Set monthly budget'}
+          {budget ? (
+            <Text style={[styles.remaining, { color: remainingColor }]}>
+                {remaining >= 0
+                ? `$${remaining.toFixed(0)} remaining`
+                : `$${Math.abs(remaining).toFixed(0)} over budget`}
+            </Text>
+            ) : null}
           </Text>
         </TouchableOpacity>
       )}
