@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PieChart } from 'react-native-gifted-charts';
 
 
-const categories = ['Food', 'Gas', 'Shopping', 'Bills', 'Other'];
+
 const colors = {
     Food: '#FF6384', Gas: '#36A2EB',
     Shopping: '#FFCE56', Bills: '#4BC0C0', Other: '#9966FF',
@@ -26,14 +26,14 @@ export default function BudgetScreen(){
         });
       }, []);
       const saveBudget = async () => {
-        await AsyncStorage.setItem('monthlyBudget', inputVal);
-        setMonthlyBudget(inputVal);
+        await AsyncStorage.setItem('budget', inputVal);
+        setBudgets(inputVal);
         setEditing(false);
         setInputVal('');
       };
 
       
-      
+
     const byCategory = items.reduce((acc,t) =>{
         acc[t.category] = (acc[t.category] || 0) + t.amount;
         return acc;
@@ -108,11 +108,21 @@ export default function BudgetScreen(){
 );
 }
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 24, backgroundColor: '#fff' },
-    title: { fontSize: 32, fontWeight: 'bold', marginTop: 40 },
-    sub: { fontSize: 16, color: '#888', marginTop: 8 },
-    row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
-    dot: { width: 12, height: 12, borderRadius: 6, marginRight: 10 },
-    cat: { flex: 1, fontSize: 15 },
-    amount: { fontSize: 15, fontWeight: '500' },
+  container: { flex: 1, padding: 24, backgroundColor: '#fff' },
+  title: { fontSize: 32, fontWeight: 'bold', marginTop: 40, marginBottom: 16 },
+  setLimit: { fontSize: 15, color: '#888', marginBottom: 8 },
+  editRow: { flexDirection: 'row', gap: 8, marginBottom: 12 },
+  input: { flex: 1, borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 10, fontSize: 15 },
+  saveBtn: { backgroundColor: '#000', borderRadius: 8, paddingVertical: 10, paddingHorizontal: 16 },
+  saveBtnText: { color: '#fff', fontWeight: '600' },
+  remaining: { fontSize: 22, fontWeight: '600', color: '#4CAF50', marginBottom: 16 },
+  over: { color: '#e53935' },
+  chart: { alignItems: 'center', marginVertical: 24 },
+  centerAmt: { fontSize: 20, fontWeight: 'bold' },
+  centerSub: { fontSize: 12, color: '#888' },
+  empty: { color: '#888', marginTop: 40, textAlign: 'center' },
+  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
+  dot: { width: 12, height: 12, borderRadius: 6, marginRight: 10 },
+  cat: { flex: 1, fontSize: 15 },
+  amount: { fontSize: 15, fontWeight: '500' },
 });

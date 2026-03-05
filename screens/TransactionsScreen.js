@@ -2,7 +2,7 @@ import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'r
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { addTransaction, loadTransactions } from '../slices/transactionSlice';
+import { addTransaction, loadTransactions, removeTransaction } from '../slices/transactionSlice';
 
 
 export default function TransactionsScreen(){
@@ -24,6 +24,12 @@ export default function TransactionsScreen(){
           category,
           date: new Date().toLocaleDateString(),
         };
+
+    const handleDelete = async(id) => {
+      dispatch(removeTransaction(id));
+      const updated = items.filter(item => item.id !== id);
+      await AsyncStorage.setItem('transactions', JSON.stringify(updated));
+    }
         dispatch(addTransaction(newTransaction));
         const updated = [newTransaction, ...items];
         await AsyncStorage.setItem('transactions', JSON.stringify(updated));
@@ -66,6 +72,9 @@ export default function TransactionsScreen(){
                     <Text style={styles.rowMeta}>{item.category} · {item.date}</Text>
                 </View>
                 <Text style={styles.rowAmount}>-${item.amount.toFixed(2)}</Text>
+                <TouchableOpacity onPress={() => handleDelete(item.id)}>
+                  <Text style={styles.deleteBtn}>✕</Text>
+                </TouchableOpacity>
             </View>
             )}
             ListEmptyComponent={<Text style={styles.empty}>No transactions yet</Text>}
@@ -90,4 +99,5 @@ const styles = StyleSheet.create({
     rowMeta: { fontSize: 12, color: '#888', marginTop: 2 },
     rowAmount: { fontSize: 16, fontWeight: '600', color: '#e53935' },
     empty: { color: '#888', marginTop: 24, textAlign: 'center' },
+    deleteBtn: { color: '#e53935', fontSize: 16, fontWeight: '600' },
   });

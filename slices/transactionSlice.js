@@ -20,6 +20,9 @@ const transactionsSlice = createSlice({
         addTransaction: (state, action) => {
           state.items.unshift(action.payload); // adds to top of list
         },
+        removeTransaction: (state, action) => {
+            state.items = state.items.filter(item => item.id !== action.payload);
+        },
 },
         extraReducers: (builder) => {
             builder
@@ -36,6 +39,6 @@ const transactionsSlice = createSlice({
 
 });
 
-export const { addTransaction } = transactionsSlice.actions;
+export const { addTransaction, removeTransaction } = transactionsSlice.actions;
 export default transactionsSlice.reducer;
 
