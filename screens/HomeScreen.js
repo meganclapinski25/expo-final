@@ -26,7 +26,7 @@ export default function HomeScreen(){
       <View style={styles.container}>
         <Text style={styles.label}>Current Balance</Text>
         <Text style={styles.balance}>${currentBalance.toFixed(2)}</Text>
-    
+
         <Text style={styles.label}>Total Spent</Text>
         <Text style={styles.spent}>-${totalSpent.toFixed(2)}</Text>
         {editing ? (
