@@ -1,9 +1,9 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Share} from 'react-native';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PieChart } from 'react-native-gifted-charts';
-import * as Notifications from 'expo-notifications';
+
 
 
 const colors = {
@@ -31,18 +31,16 @@ export default function BudgetScreen(){
         setEditing(false);
         setInputVal('');
       };
-
-      useEffect(() => {
-        if (budget && remaining <= 100 && remaining > 0) {
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: '!!Budget Warning!!',
-              body: `You only have $${remaining.toFixed(0)} left in your budget!`,
-            },
-            trigger: null, // sends immediately
-          });
-        }
-      }, [remaining]);
+      const handleShare = async () => {
+        const lines = Object.entries(byCategory)
+          .map(([cat, amt]) => `${cat}: $${amt.toFixed(2)}`)
+          .join('\n');
+      
+        await Share.share({
+          message: `💰 My Budget Summary\n\nMonthly Budget: $${budget}\nTotal Spent: $${totalSpent.toFixed(2)}\nRemaining: $${remaining.toFixed(2)}\n\nBreakdown:\n${lines}`,
+        });
+      };
+      
 
       
 
