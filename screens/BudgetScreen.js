@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
-import { PolarChart, Pie } from 'victory-native';
+import { PieChart } from 'react-native-gifted-charts'
 
 
 const categories = ['Food', 'Gas', 'Shopping', 'Bills', 'Other'];
@@ -29,19 +29,22 @@ export default function BudgetScreen(){
         <View style={styles.container}>
             <Text style={styles.title}>Budget</Text>
             {total > 0 ? (
-                <View style ={{height:220}}>
-                    <PolarChart
-                        data={Object.entries(byCategory).map(([cat,amount]) =>({
-                            label:cat,
-                            value:amount,
-                            color:colors[cat] || '#ccc',
-                        }))}
-                        labelKey="label"
-                        valueKey="value"
-                        colorKey = "color"
-                        >
-                        <Pie.Chart innerRadius={60}/>
-                    </PolarChart>
+                <View style={{ alignItems: 'center', marginVertical: 24 }}>
+                    <PieChart
+                    donut
+                    data={Object.entries(byCategory).map(([cat, amount]) => ({
+                        value: amount,
+                        color: colors[cat] || '#ccc',
+                        text: cat,
+                    }))}
+                    innerCircleColor="#fff"
+                    centerLabelComponent={() => (
+                        <View style={{ alignItems: 'center' }}>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>${total.toFixed(0)}</Text>
+                        <Text style={{ fontSize: 12, color: '#888' }}>spent</Text>
+                        </View>
+                    )}
+                    />
                 </View>
             ):(
                 <Text style={styles.sub}>Add transactions to see your chart</Text>
