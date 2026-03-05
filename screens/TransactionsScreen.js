@@ -1,11 +1,37 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { loadTransactions } from '../slices/transactionSlice';
 
-export default function HabitsScreen(){
+export default function TransactionsScreen(){
+
+    const dispatch = useDispatch();
+    const { items, status, error } = useSelector(state => state.transactions);
+
+    useEffect(() => {
+        dispatch(loadTransactions()); // load from AsyncStorage on mount
+      }, []);
+    
+      if (status === 'loading') return <ActivityIndicator style={{ flex: 1 }} />;
+      if (status === 'failed') return <Text>Error: {error}</Text>;
+
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Transactions</Text>
-            <Text style={styles.sub}>Transactions will appear here</Text>
-            
+            <FlatList
+                data={items}
+                keyExtractor={(item) => item.id}
+                onRefresh={() => dispatch(loadTransactions())}
+                refreshing={status === 'loading'}
+                renderItem={({ item }) => (
+                <View style={styles.row}>
+                    <Text>{item.label}</Text>
+                    <Text>${item.amount}</Text>
+                </View>
+                )}
+                ListEmptyComponent={<Text style={styles.sub}>No transactions yet</Text>}
+            />
         </View>
     )
 }
