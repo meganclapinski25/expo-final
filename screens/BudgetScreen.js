@@ -11,6 +11,8 @@ export default function BudgetScreen(){
         acc[t.category] = (acc[t.category] || 0) + t.amount;
         return acc;
     }, {});
+
+    
     return(
         <View style={styles.container}>
             <Text style={styles.title}>Budget</Text>
