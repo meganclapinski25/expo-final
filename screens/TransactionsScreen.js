@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addTransaction, loadTransactions, removeTransaction } from '../slices/transactionSlice';
 
-export default function TransactionsScreen(){
+export default function TransactionsScreen({navigation}){
 
     const dispatch = useDispatch();
     const {items , status} = useSelector(state => state.transactions);
@@ -66,16 +66,18 @@ export default function TransactionsScreen(){
             data={items}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
-            <View style={styles.row}>
-                <View>
-                    <Text style={styles.rowLabel}>{item.label}</Text>
-                    <Text style={styles.rowMeta}>{item.category} · {item.date}</Text>
-                </View>
-                <Text style={styles.rowAmount}>-${item.amount.toFixed(2)}</Text>
-                <TouchableOpacity onPress={() => handleDelete(item.id)}>
-                  <Text style={styles.deleteBtn}>✕</Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('TransactionDetail', { item })}>
+              <View style={styles.row}>
+                  <View>
+                      <Text style={styles.rowLabel}>{item.label}</Text>
+                      <Text style={styles.rowMeta}>{item.category} · {item.date}</Text>
+                  </View>
+                  <Text style={styles.rowAmount}>-${item.amount.toFixed(2)}</Text>
+                  <TouchableOpacity onPress={() => handleDelete(item.id)}>
+                    <Text style={styles.deleteBtn}>✕</Text>
+                  </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
             )}
             ListEmptyComponent={<Text style={styles.empty}>No transactions yet</Text>}
           />
