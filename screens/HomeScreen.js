@@ -1,11 +1,11 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated } from 'react-native';
-import { useState, useEffect , useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { theme } from '../theme';
 
-export default function HomeScreen(){
-
-  const {items} = useSelector(state => state.transactions);
+export default function HomeScreen() {
+  const { items } = useSelector(state => state.transactions);
   const [startingBalance, setStartingBalance] = useState('');
   const [editing, setEditing] = useState(false);
 
@@ -18,7 +18,6 @@ export default function HomeScreen(){
       useNativeDriver: true,
     }).start();
   }, []);
-
 
   useEffect(() => {
     AsyncStorage.getItem('startingBalance').then(val => {
@@ -34,43 +33,44 @@ export default function HomeScreen(){
     setEditing(false);
   };
 
-    return (
-      <View style={styles.container}>
-        <Text style={styles.label}>Current Balance</Text>
-        <Animated.Text style={[styles.balance, { opacity: fadeAnim }]}>
-          ${currentBalance.toFixed(2)}
-        </Animated.Text>
+  return (
+    <View style={styles.container}>
+      <Text style={styles.label}>Current Balance</Text>
+      <Animated.Text style={[styles.balance, { opacity: fadeAnim }]}>
+        ${currentBalance.toFixed(2)}
+      </Animated.Text>
 
-        <Text style={styles.label}>Total Spent</Text>
-        <Text style={styles.spent}>-${totalSpent.toFixed(2)}</Text>
-        {editing ? (
-      <>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter starting balance"
-          keyboardType="numeric"
-          value={startingBalance}
-          onChangeText={(text) => setStartingBalance(text.replace(/[^0-9.]/g, ''))}
-        />
-        <TouchableOpacity style={styles.btn} onPress={handleSaveBalance}>
-          <Text style={styles.btnText}>Save</Text>
-        </TouchableOpacity>
+      <Text style={styles.label}>Total Spent</Text>
+      <Text style={styles.spent}>-${totalSpent.toFixed(2)}</Text>
+
+      {editing ? (
+        <>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter starting balance"
+            keyboardType="numeric"
+            value={startingBalance}
+            onChangeText={(text) => setStartingBalance(text.replace(/[^0-9.]/g, ''))}
+          />
+          <TouchableOpacity style={styles.btn} onPress={handleSaveBalance}>
+            <Text style={styles.btnText}>Save</Text>
+          </TouchableOpacity>
         </>
-    ) : (
-      <TouchableOpacity style={styles.btn} onPress={() => setEditing(true)}>
-        <Text style={styles.btnText}>Set Starting Balance</Text>
-      </TouchableOpacity>
-    )}
-      </View>
-    );
+      ) : (
+        <TouchableOpacity style={styles.btn} onPress={() => setEditing(true)}>
+          <Text style={styles.btnText}>Set Starting Balance</Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, backgroundColor: '#fff' },
-  label: { fontSize: 16, color: '#888', marginTop: 40 },
-  balance: { fontSize: 48, fontWeight: 'bold', color: '#000', marginBottom: 8 },
-  spent: { fontSize: 24, fontWeight: '600', color: '#e53935', marginBottom: 32 },
-  input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, fontSize: 16, marginBottom: 10, marginTop: 8 },
-  btn: { backgroundColor: '#000', borderRadius: 10, padding: 14, alignItems: 'center' },
-  btnText: { color: '#fff', fontWeight: '600', fontSize: 16 },
+  container: { flex: 1, padding: 24, backgroundColor: theme.background },
+  label: { fontSize: 16, color: theme.subtext, marginTop: 40 },
+  balance: { fontSize: 48, fontWeight: 'bold', color: theme.text, marginBottom: 8 },
+  spent: { fontSize: 24, fontWeight: '600', color: theme.danger, marginBottom: 32 },
+  input: { borderWidth: 1, borderColor: theme.inputBorder, borderRadius: 8, padding: 12, fontSize: 16, marginBottom: 10, marginTop: 8 },
+  btn: { backgroundColor: theme.accent, borderRadius: 10, padding: 14, alignItems: 'center' },
+  btnText: { color: theme.background, fontWeight: '600', fontSize: 16 },
 });

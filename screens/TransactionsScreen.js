@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addTransaction, loadTransactions, removeTransaction } from '../slices/transactionSlice';
+import { theme } from '../theme';
 
 const CATEGORIES = ['Food', 'Gas', 'Shopping', 'Bills', 'Other'];
 
@@ -69,7 +70,7 @@ export default function TransactionsScreen({ navigation }) {
       </TouchableOpacity>
 
       {status === 'loading' && <ActivityIndicator style={{ marginTop: 20 }} />}
-      {status === 'failed' && <Text style={{ color: 'red' }}>Failed to load transactions</Text>}
+      {status === 'failed' && <Text style={{ color: theme.danger }}>Failed to load transactions</Text>}
 
       <FlatList
         data={items}
@@ -97,20 +98,20 @@ export default function TransactionsScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, backgroundColor: '#fff' },
+  container: { flex: 1, padding: 24, backgroundColor: theme.background },
   title: { fontSize: 32, fontWeight: 'bold', marginTop: 40, marginBottom: 16 },
-  input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, fontSize: 16, marginBottom: 10 },
+  input: { borderWidth: 1, borderColor: theme.inputBorder, borderRadius: 8, padding: 12, fontSize: 16, marginBottom: 10 },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 12 },
-  chip: { paddingVertical: 6, paddingHorizontal: 12, borderRadius: 20, borderWidth: 1, borderColor: '#ddd' },
-  chipActive: { backgroundColor: '#000', borderColor: '#000' },
-  chipText: { fontSize: 13, color: '#555' },
-  chipTextActive: { color: '#fff' },
-  addBtn: { backgroundColor: '#000', borderRadius: 10, padding: 14, alignItems: 'center', marginBottom: 20 },
-  addBtnText: { color: '#fff', fontWeight: '600', fontSize: 16 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
-  rowLabel: { fontSize: 16, fontWeight: '500' },
-  rowMeta: { fontSize: 12, color: '#888', marginTop: 2 },
-  rowAmount: { fontSize: 16, fontWeight: '600', color: '#e53935' },
-  empty: { color: '#888', marginTop: 24, textAlign: 'center' },
-  deleteBtn: { color: '#e53935', fontSize: 16, fontWeight: '600' },
+  chip: { paddingVertical: 6, paddingHorizontal: 12, borderRadius: 20, borderWidth: 1, borderColor: theme.inputBorder },
+  chipActive: { backgroundColor: theme.accent, borderColor: theme.accent },
+  chipText: { fontSize: 13, color: theme.subtext },
+  chipTextActive: { color: theme.background },
+  addBtn: { backgroundColor: theme.accent, borderRadius: 10, padding: 14, alignItems: 'center', marginBottom: 20 },
+  addBtnText: { color: theme.background, fontWeight: '600', fontSize: 16 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: theme.border },
+  rowLabel: { fontSize: 16, fontWeight: '500', color: theme.text },
+  rowMeta: { fontSize: 12, color: theme.subtext, marginTop: 2 },
+  rowAmount: { fontSize: 16, fontWeight: '600', color: theme.danger },
+  empty: { color: theme.subtext, marginTop: 24, textAlign: 'center' },
+  deleteBtn: { color: theme.danger, fontSize: 16, fontWeight: '600' },
 });
