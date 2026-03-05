@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addTransaction, loadTransactions, removeTransaction } from '../slices/transactionSlice';
-import * as Haptics from 'expo-haptics';
 
 export default function TransactionsScreen(){
 
@@ -25,7 +24,7 @@ export default function TransactionsScreen(){
           date: new Date().toLocaleDateString(),
         };
         dispatch(addTransaction(newTransaction));
-        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        
         const updated = [newTransaction, ...items];
         await AsyncStorage.setItem('transactions', JSON.stringify(updated));
         setLabel('');
