@@ -114,6 +114,10 @@ export default function BudgetScreen(){
                     <Text style={styles.amount}>${amount.toFixed(2)}</Text>
                 </View>
                 ))}
+
+                <TouchableOpacity style={styles.shareBtn} onPress={handleShare}>
+                <Text style={styles.shareBtnText}>Share Summary</Text>
+                </TouchableOpacity>
         </ScrollView>
 );
 }
@@ -135,4 +139,6 @@ const styles = StyleSheet.create({
   dot: { width: 12, height: 12, borderRadius: 6, marginRight: 10 },
   cat: { flex: 1, fontSize: 15 },
   amount: { fontSize: 15, fontWeight: '500' },
+  shareBtn: { backgroundColor: '#f5f5f5', borderRadius: 10, padding: 12, alignItems: 'center', marginBottom: 16 },
+  shareBtnText: { fontWeight: '600', fontSize: 15 },
 });

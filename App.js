@@ -9,14 +9,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { loadTransactions } from './slices/transactionSlice';
-import * as Notifications from 'expo-notifications';
+
 
 const Tab = createBottomTabNavigator();
 function AppLoader() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadTransactions());
-    Notifications.requestPermissionsAsync();
   }, []);
   return null;
 }
