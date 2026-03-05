@@ -13,6 +13,8 @@ export default function TransactionsScreen(){
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('Food');
     const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Other'];
+    // explain handleADD 
+    
     const handleAdd = async () => {
         if (!label || !amount) return;
         const newTransaction = {
@@ -35,7 +37,7 @@ export default function TransactionsScreen(){
       
           {/* Inputs */}
           <TextInput style={styles.input} placeholder="Label" value={label} onChangeText={setLabel} />
-          <TextInput style={styles.input} placeholder="Amount" keyboardType="decimal-pad" value={amount} onChangeText={setAmount} />
+          <TextInput style={styles.input} placeholder="Amount" keyboardType="numeric" value={amount} onChangeText={setAmount} />
       
          {/* Category picker */}
                 <View style={styles.chips}>
