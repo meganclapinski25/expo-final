@@ -13,7 +13,15 @@ export default function HomeScreen(){
       if (val) setStartingBalance(val);
     });
   }, []);
-  
+
+  const totalSpent = items.reduce((sum, t) => sum + t.amount, 0);
+  const currentBalance = (parseFloat(startingBalance) || 0) - totalSpent;
+
+  const handleSaveBalance = async () => {
+    await AsyncStorage.setItem('startingBalance', startingBalance);
+    setEditing(false);
+  };
+
     return (
     <View style={styles.container}>
         <Text style={styles.label}> Balance</Text>
