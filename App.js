@@ -27,7 +27,7 @@ function TransactionsStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="TransactionsList" component={TransactionsScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="TransactionDetail" component={TransactionDetailScreen} options={{ title: 'Transaction' }} />
+      <Stack.Screen name="TransactionDetail" component={TransactionDetailScreen} options={{ title: 'Transaction Details', headerBackTitle:'Back' }} />
     </Stack.Navigator>
   );
 }
