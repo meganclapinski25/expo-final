@@ -9,6 +9,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { loadTransactions } from './slices/transactionSlice';
+import { createStackNavigator } from '@react-navigation/stack';
+import TransactionDetailScreen from './screens/TransactionDetailScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -18,6 +20,16 @@ function AppLoader() {
     dispatch(loadTransactions());
   }, []);
   return null;
+}
+
+const Stack = createStackNavigator();
+function TransactionsStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="TransactionsList" component={TransactionsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="TransactionDetail" component={TransactionDetailScreen} options={{ title: 'Transaction' }} />
+    </Stack.Navigator>
+  );
 }
 export default function App() {
   return (
@@ -37,7 +49,7 @@ export default function App() {
           tabBarActiveTintColor: '#000',
           tabBarInactiveTintColor: '#aaa',
         })}>
-          <Tab.Screen name="Transactions" component={TransactionsScreen} />
+          <Tab.Screen name="Transactions" component={TransactionsStack} />
           <Tab.Screen name="Dashboard" component={HomeScreen} />
           <Tab.Screen name="Budget" component={BudgetScreen} />
         </Tab.Navigator>
