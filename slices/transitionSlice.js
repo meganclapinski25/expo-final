@@ -13,7 +13,7 @@ const transactionsSlice = createSlice({
     name: 'transactions',
     initialState: {
         items: [],
-        status: 'idle', // idle | loading | succeeded | failed
+        status: 'idle', 
         error: null,
       },
 })
