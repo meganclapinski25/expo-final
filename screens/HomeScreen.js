@@ -7,17 +7,13 @@ import { theme } from '../theme';
 export default function HomeScreen() {
   const { items } = useSelector(state => state.transactions);
   const [startingBalance, setStartingBalance] = useState('');
+  const [displayBalance, setDisplayBalance] = useState(0);
   const [editing, setEditing] = useState(false);
 
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const totalSpent = items.reduce((sum, t) => sum + t.amount, 0);
+  const currentBalance = (parseFloat(startingBalance) || 0) - totalSpent;
 
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 800,
-      useNativeDriver: true,
-    }).start();
-  }, []);
+  const animatedValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     AsyncStorage.getItem('startingBalance').then(val => {
@@ -25,8 +21,15 @@ export default function HomeScreen() {
     });
   }, []);
 
-  const totalSpent = items.reduce((sum, t) => sum + t.amount, 0);
-  const currentBalance = (parseFloat(startingBalance) || 0) - totalSpent;
+  useEffect(() => {
+    animatedValue.addListener(({ value }) => setDisplayBalance(value));
+    Animated.timing(animatedValue, {
+      toValue: currentBalance,
+      duration: 1200,
+      useNativeDriver: false,
+    }).start();
+    return () => animatedValue.removeAllListeners();
+  }, [currentBalance]);
 
   const handleSaveBalance = async () => {
     await AsyncStorage.setItem('startingBalance', startingBalance);
@@ -36,9 +39,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Current Balance</Text>
-      <Animated.Text style={[styles.balance, { opacity: fadeAnim }]}>
-        ${currentBalance.toFixed(2)}
-      </Animated.Text>
+      <Text style={styles.balance}>${displayBalance.toFixed(2)}</Text>
 
       <Text style={styles.label}>Total Spent</Text>
       <Text style={styles.spent}>-${totalSpent.toFixed(2)}</Text>
