@@ -51,9 +51,17 @@ export default function TransactionsScreen(){
                 </View>
 
                 {/* Add button */}
-                <TouchableOpacity style={styles.addBtn} onPress={handleAdd}>
-                <Text style={styles.addBtnText}>+ Add Transaction</Text>
-                </TouchableOpacity>
+            <TouchableOpacity style={styles.addBtn} onPress={handleAdd}>
+            <Text style={styles.addBtnText}>+ Add Transaction</Text>
+            </TouchableOpacity>
+
+            <View style={styles.row}>
+                <View>
+                    <Text style={styles.rowLabel}>{item.label}</Text>
+                    <Text style={styles.rowMeta}>{item.category} · {item.date}</Text>
+                </View>
+                <Text style={styles.rowAmount}>-${item.amount.toFixed(2)}</Text>
+            </View>
         </View>
       );
 }
