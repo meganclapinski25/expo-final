@@ -16,7 +16,25 @@ const transactionsSlice = createSlice({
         status: 'idle', 
         error: null,
       },
-})
+      reducers: {
+        addTransaction: (state, action) => {
+          state.items.unshift(action.payload); // adds to top of list
+        },
+},
+        extraReducers: (builder) => {
+            builder
+            .addCase(loadTransactions.pending, (state) => { state.status = 'loading'; })
+            .addCase(loadTransactions.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.items = action.payload;
+            })
+            .addCase(loadTransactions.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            });
+        },
+
+});
 
 
 
