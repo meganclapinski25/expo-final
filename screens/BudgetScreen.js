@@ -21,10 +21,19 @@ export default function BudgetScreen(){
     const [inputVal, setInputVal] = useState('');
     const [editing, setEditing] = useState(false);
     useEffect(() => {
-        AsyncStorage.getItem('monthlyBudget').then(val => {
-          if (val) setMonthlyBudget(val);
+        AsyncStorage.getItem('budget').then(val => {
+          if (val) setBudgets(val);
         });
       }, []);
+      const saveBudget = async () => {
+        await AsyncStorage.setItem('monthlyBudget', inputVal);
+        setMonthlyBudget(inputVal);
+        setEditing(false);
+        setInputVal('');
+      };
+
+      
+      
     const byCategory = items.reduce((acc,t) =>{
         acc[t.category] = (acc[t.category] || 0) + t.amount;
         return acc;
@@ -55,44 +64,46 @@ export default function BudgetScreen(){
             <TouchableOpacity style={styles.saveBtn} onPress={saveBudget}>
                 <Text style={styles.saveBtnText}>Save</Text>
             </TouchableOpacity>
-            </View>
+        </View>
             ) : (
-            <TouchableOpacity onPress={() => { setEditing(true); setInputVal(monthlyBudget); }}>
+            <TouchableOpacity onPress={() => { setEditing(true); setInputVal(budget); }}>
                 <Text style={styles.setLimit}>
-                    {monthlyBudget ? `Monthly budget: $${monthlyBudget} — tap to edit` : 'Set monthly budget'}
+                    {budget ? `Monthly budget: $${budget} — tap to edit` : 'Set monthly budget'}
                 </Text>
             </TouchableOpacity>
     )}
 
+        {budget ? (
+            <Text style={[styles.remaining, remaining < 0 && styles.over]}>
+                {remaining >= 0 ? `$${remaining.toFixed(0)} remaining` : `$${Math.abs(remaining).toFixed(0)} over budget`}
+            </Text>
+            ) : null}
 
-            {total > 0 ? (
-                <View style={{ alignItems: 'center', marginVertical: 24 }}>
+
+            {chartData.length > 0 ? (
+                <View style={styles.chart}>
                     <PieChart
                     donut
-                    data={Object.entries(byCategory).map(([cat, amount]) => ({
-                        value: amount,
-                        color: colors[cat] || '#ccc',
-                        text: cat,
-                    }))}
+                    data={chartData}
                     innerCircleColor="#fff"
                     centerLabelComponent={() => (
                         <View style={{ alignItems: 'center' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>${total.toFixed(0)}</Text>
-                        <Text style={{ fontSize: 12, color: '#888' }}>spent</Text>
+                        <Text style={styles.centerAmt}>${totalSpent.toFixed(0)}</Text>
+                        <Text style={styles.centerSub}>spent</Text>
                         </View>
                     )}
                     />
                 </View>
-            ):(
-                <Text style={styles.sub}>Add transactions to see your chart</Text>
-            )}
-            {categories.map(cat =>(
+                ) : (
+                <Text style={styles.empty}>Add transactions to see your chart</Text>
+                )}
+                {Object.entries(byCategory).map(([cat, amount]) => (
                 <View key={cat} style={styles.row}>
-                    <View style={[styles.dot, { backgroundColor: colors[cat] }]} />
+                    <View style={[styles.dot, { backgroundColor: colors[cat] || '#ccc' }]} />
                     <Text style={styles.cat}>{cat}</Text>
-                    <Text style={styles.amount}>${(byCategory[cat] || 0).toFixed(2)}</Text>
-                    </View>
-            ))}
+                    <Text style={styles.amount}>${amount.toFixed(2)}</Text>
+                </View>
+                ))}
         </ScrollView>
 );
 }
