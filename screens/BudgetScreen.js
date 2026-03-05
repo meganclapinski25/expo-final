@@ -16,11 +16,10 @@ const colors = {
 
 export default function BudgetScreen(){
 
-    const [budgets, setBudgets] = useState({})
-    
-    
+    const [budgets, setBudgets] = useState('')
     const {items} = useSelector(state => state.transactions);
-    const total = items.reduce((sum, t) => sum + t.amount, 0);
+    const [inputVal, setInputVal] = useState('');
+const [editing, setEditing] = useState(false);
 
     const byCategory = items.reduce((acc,t) =>{
         acc[t.category] = (acc[t.category] || 0) + t.amount;
