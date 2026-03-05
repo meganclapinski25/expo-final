@@ -1,5 +1,5 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { useState, useEffect , useRef} from 'react';
 import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -8,6 +8,18 @@ export default function HomeScreen(){
   const {items} = useSelector(state => state.transactions);
   const [startingBalance, setStartingBalance] = useState('');
   const [editing, setEditing] = useState(false);
+
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 800,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
+
   useEffect(() => {
     AsyncStorage.getItem('startingBalance').then(val => {
       if (val) setStartingBalance(val);
@@ -25,7 +37,9 @@ export default function HomeScreen(){
     return (
       <View style={styles.container}>
         <Text style={styles.label}>Current Balance</Text>
-        <Text style={styles.balance}>${currentBalance.toFixed(2)}</Text>
+        <Animated.Text style={[styles.balance, { opacity: fadeAnim }]}>
+          ${currentBalance.toFixed(2)}
+        </Animated.Text>
 
         <Text style={styles.label}>Total Spent</Text>
         <Text style={styles.spent}>-${totalSpent.toFixed(2)}</Text>
