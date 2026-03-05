@@ -40,8 +40,20 @@ export default function BudgetScreen(){
 
     
     return(
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.title}>Budget</Text>
+
+            {editing ? (
+             <View style={styles.editRow}>
+                <TextInput
+                style={styles.input}
+                placeholder="Monthly budget"
+                keyboardType="numeric"
+                value={inputVal}
+                onChangeText={t => setInputVal(t.replace(/[^0-9.]/g, ''))}
+            />
+
+
             {total > 0 ? (
                 <View style={{ alignItems: 'center', marginVertical: 24 }}>
                     <PieChart
@@ -70,7 +82,7 @@ export default function BudgetScreen(){
                     <Text style={styles.amount}>${(byCategory[cat] || 0).toFixed(2)}</Text>
                     </View>
             ))}
-        </View>
+        </ScrollView>
 );
 }
 const styles = StyleSheet.create({
