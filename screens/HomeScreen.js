@@ -4,6 +4,16 @@ import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen(){
+
+  const {items} = useSelector(state => state.transactions);
+  const [startingBalance, setStartingBalance] = useState('');
+  const [editing, setEditing] = useState(false);
+  useEffect(() => {
+    AsyncStorage.getItem('startingBalance').then(val => {
+      if (val) setStartingBalance(val);
+    });
+  }, []);
+  
     return (
     <View style={styles.container}>
         <Text style={styles.label}> Balance</Text>
