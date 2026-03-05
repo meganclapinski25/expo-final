@@ -6,12 +6,22 @@ import BudgetScreen from './screens/BudgetScreen';
 import { store } from './store';
 import { Provider } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { loadTransactions } from './slices/transactionSlice';
 
 const Tab = createBottomTabNavigator();
-
+function AppLoader() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadTransactions());
+  }, []);
+  return null;
+}
 export default function App() {
   return (
     <Provider store={store}>
+      <AppLoader/>
       <NavigationContainer>
         <Tab.Navigator
         screenOptions={({ route }) => ({

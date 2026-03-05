@@ -1,6 +1,8 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { PieChart } from 'react-native-gifted-charts'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PieChart } from 'react-native-gifted-charts';
 
 
 const categories = ['Food', 'Gas', 'Shopping', 'Bills', 'Other'];
@@ -14,7 +16,8 @@ const colors = {
 
 export default function BudgetScreen(){
 
-
+    const [budgets, setBudgets] = useState({})
+    
     
     const {items} = useSelector(state => state.transactions);
     const total = items.reduce((sum, t) => sum + t.amount, 0);
@@ -64,7 +67,7 @@ const styles = StyleSheet.create({
     title: { fontSize: 32, fontWeight: 'bold', marginTop: 40 },
     sub: { fontSize: 16, color: '#888', marginTop: 8 },
     row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
-dot: { width: 12, height: 12, borderRadius: 6, marginRight: 10 },
-cat: { flex: 1, fontSize: 15 },
-amount: { fontSize: 15, fontWeight: '500' },
+    dot: { width: 12, height: 12, borderRadius: 6, marginRight: 10 },
+    cat: { flex: 1, fontSize: 15 },
+    amount: { fontSize: 15, fontWeight: '500' },
 });
