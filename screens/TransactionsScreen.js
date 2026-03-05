@@ -37,7 +37,18 @@ export default function TransactionsScreen(){
           <TextInput style={styles.input} placeholder="Label" value={label} onChangeText={setLabel} />
           <TextInput style={styles.input} placeholder="Amount" keyboardType="decimal-pad" value={amount} onChangeText={setAmount} />
       
-         
+         {/* Category picker */}
+                <View style={styles.chips}>
+                {CATEGORIES.map(cat => (
+                    <TouchableOpacity
+                    key={cat}
+                    style={[styles.chip, category === cat && styles.chipActive]}
+                    onPress={() => setCategory(cat)}
+                    >
+                    <Text style={[styles.chipText, category === cat && styles.chipTextActive]}>{cat}</Text>
+                    </TouchableOpacity>
+                ))}
+                </View>
         </View>
       );
 }
