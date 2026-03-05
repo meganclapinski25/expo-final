@@ -49,6 +49,11 @@ export default function TransactionsScreen(){
                     </TouchableOpacity>
                 ))}
                 </View>
+
+                {/* Add button */}
+                <TouchableOpacity style={styles.addBtn} onPress={handleAdd}>
+                <Text style={styles.addBtnText}>+ Add Transaction</Text>
+                </TouchableOpacity>
         </View>
       );
 }
