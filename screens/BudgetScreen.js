@@ -49,11 +49,22 @@ export default function BudgetScreen(){
             ):(
                 <Text style={styles.sub}>Add transactions to see your chart</Text>
             )}
-     </View>
+            {categories.map(cat =>(
+                <View key={cat} style={styles.row}>
+                    <View style={[styles.dot, { backgroundColor: colors[cat] }]} />
+                    <Text style={styles.cat}>{cat}</Text>
+                    <Text style={styles.amount}>${(byCategory[cat] || 0).toFixed(2)}</Text>
+                    </View>
+            ))}
+        </View>
 );
 }
 const styles = StyleSheet.create({
     container: { flex: 1, padding: 24, backgroundColor: '#fff' },
     title: { fontSize: 32, fontWeight: 'bold', marginTop: 40 },
     sub: { fontSize: 16, color: '#888', marginTop: 8 },
+    row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
+dot: { width: 12, height: 12, borderRadius: 6, marginRight: 10 },
+cat: { flex: 1, fontSize: 15 },
+amount: { fontSize: 15, fontWeight: '500' },
 });
