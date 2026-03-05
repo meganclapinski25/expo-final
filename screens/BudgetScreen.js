@@ -52,6 +52,17 @@ export default function BudgetScreen(){
                 value={inputVal}
                 onChangeText={t => setInputVal(t.replace(/[^0-9.]/g, ''))}
             />
+            <TouchableOpacity style={styles.saveBtn} onPress={saveBudget}>
+                <Text style={styles.saveBtnText}>Save</Text>
+            </TouchableOpacity>
+            </View>
+            ) : (
+            <TouchableOpacity onPress={() => { setEditing(true); setInputVal(monthlyBudget); }}>
+                <Text style={styles.setLimit}>
+                    {monthlyBudget ? `Monthly budget: $${monthlyBudget} — tap to edit` : 'Set monthly budget'}
+                </Text>
+            </TouchableOpacity>
+    )}
 
 
             {total > 0 ? (
