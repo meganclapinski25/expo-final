@@ -24,19 +24,19 @@ export default function TransactionsScreen(){
           category,
           date: new Date().toLocaleDateString(),
         };
-
-    const handleDelete = async(id) => {
-      dispatch(removeTransaction(id));
-      const updated = items.filter(item => item.id !== id);
-      await AsyncStorage.setItem('transactions', JSON.stringify(updated));
-    }
         dispatch(addTransaction(newTransaction));
         const updated = [newTransaction, ...items];
         await AsyncStorage.setItem('transactions', JSON.stringify(updated));
         setLabel('');
         setAmount('');
       };
-
+      
+      const handleDelete = async(id) => {
+        dispatch(removeTransaction(id));
+        const updated = items.filter(item => item.id !== id);
+        await AsyncStorage.setItem('transactions', JSON.stringify(updated));
+      };
+      
     return (
         <View style={styles.container}>
           <Text style={styles.title}>Transactions</Text>
