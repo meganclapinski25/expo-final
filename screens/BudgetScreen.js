@@ -1,6 +1,16 @@
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
+import Svg, { Path, Circle } from 'react-native-svg';
 
 export default function BudgetScreen(){
+
+    const {items} = useSelector(state => state.transactions);
+    const total = items.reduce((sum, t) => sum + t.amount, 0);
+
+    const byCategory = items.reduce((acc,t) =>{
+        acc[t.category] = (acc[t.category] || 0) + t.amount;
+        return acc;
+    }, {});
     return(
         <View style={styles.container}>
             <Text style={styles.title}>Budget</Text>
