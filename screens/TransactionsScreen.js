@@ -1,40 +1,24 @@
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { loadTransactions } from '../slices/transactionSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { addTransaction, loadTransactions } from '../slices/transactionSlice';
 
+const dispatch = useDispatch();
+const {item, status} = useSelector(state => state.transactions);
+const [label, setLabel] = useState('');
+const [amount, setAmount] = useState('');
+const [category, setCategory] = useState('Food');
+const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Other'];
 export default function TransactionsScreen(){
-
-    const dispatch = useDispatch();
-    const { items, status, error } = useSelector(state => state.transactions);
-
-    useEffect(() => {
-        dispatch(loadTransactions()); // load from AsyncStorage on mount
-      }, []);
-    
-      if (status === 'loading') return <ActivityIndicator style={{ flex: 1 }} />;
-      if (status === 'failed') return <Text>Error: {error}</Text>;
-
-
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Transactions</Text>
-            <FlatList
-                data={items}
-                keyExtractor={(item) => item.id}
-                onRefresh={() => dispatch(loadTransactions())}
-                refreshing={status === 'loading'}
-                renderItem={({ item }) => (
-                <View style={styles.row}>
-                    <Text>{item.label}</Text>
-                    <Text>${item.amount}</Text>
-                </View>
-                )}
-                ListEmptyComponent={<Text style={styles.sub}>No transactions yet</Text>}
-            />
+            <Text style={styles.sub}>Transactions will appear here</Text>
         </View>
     )
 }
+
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, backgroundColor: '#fff' },
   title: { fontSize: 32, fontWeight: 'bold', marginTop: 40 },
