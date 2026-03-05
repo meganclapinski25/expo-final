@@ -23,21 +23,32 @@ export default function HomeScreen(){
   };
 
     return (
-    <View style={styles.container}>
-        <Text style={styles.label}> Balance</Text>
-        <Text style={styles.balance}>$1,240.00</Text>
+      <View style={styles.container}>
+        <Text style={styles.label}>Current Balance</Text>
+        <Text style={styles.balance}>${currentBalance.toFixed(2)}</Text>
+    
+        <Text style={styles.label}>Total Spent</Text>
+        <Text style={styles.spent}>-${totalSpent.toFixed(2)}</Text>
+        {editing ? (
+      <>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter starting balance"
+          keyboardType="numeric"
+          value={startingBalance}
+          onChangeText={(text) => setStartingBalance(text.replace(/[^0-9.]/g, ''))}
+        />
         
-    </View>
+      </View>
     );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, backgroundColor: '#fff' },
   label: { fontSize: 16, color: '#888', marginTop: 40 },
-  balance: { fontSize: 48, fontWeight: 'bold', color: '#000' },
-  paydayBanner: { backgroundColor: '#4CAF50', borderRadius: 12, padding: 16, marginTop: 24 },
-  paydayText: { color: '#fff', fontSize: 16 },
-  card: { backgroundColor: '#f5f5f5', borderRadius: 12, padding: 16, marginTop: 16 },
-  cardLabel: { fontSize: 14, color: '#888' },
-  cardValue: { fontSize: 22, fontWeight: '600', marginTop: 4 },
+  balance: { fontSize: 48, fontWeight: 'bold', color: '#000', marginBottom: 8 },
+  spent: { fontSize: 24, fontWeight: '600', color: '#e53935', marginBottom: 32 },
+  input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, fontSize: 16, marginBottom: 10, marginTop: 8 },
+  btn: { backgroundColor: '#000', borderRadius: 10, padding: 14, alignItems: 'center' },
+  btnText: { color: '#fff', fontWeight: '600', fontSize: 16 },
 });
