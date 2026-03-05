@@ -79,19 +79,13 @@ export default function BudgetScreen() {
       ) : (
         <TouchableOpacity onPress={() => { setEditing(true); setInputVal(budget); }}>
           <Text style={styles.setLimit}>
-          {budget ? (
-            <Text style={[styles.remaining, { color: remainingColor }]}>
-                {remaining >= 0
-                ? `$${remaining.toFixed(0)} remaining`
-                : `$${Math.abs(remaining).toFixed(0)} over budget`}
-            </Text>
-            ) : null}
+            {budget ? `Monthly budget: $${budget} — tap to edit` : 'Set monthly budget'}
           </Text>
         </TouchableOpacity>
       )}
 
       {budget ? (
-        <Text style={[styles.remaining, remaining < 0 && styles.over]}>
+        <Text style={[styles.remaining, { color: remainingColor }]}>
           {remaining >= 0 ? `$${remaining.toFixed(0)} remaining` : `$${Math.abs(remaining).toFixed(0)} over budget`}
         </Text>
       ) : null}
@@ -138,7 +132,7 @@ const styles = StyleSheet.create({
   saveBtn: { backgroundColor: theme.accent, borderRadius: 8, paddingVertical: 10, paddingHorizontal: 16 },
   saveBtnText: { color: theme.background, fontWeight: '600' },
   remaining: { fontSize: 22, fontWeight: '600', color: theme.success, marginBottom: 16 },
-  over: { color: theme.danger },
+
   chart: { alignItems: 'center', marginVertical: 24 },
   centerAmt: { fontSize: 20, fontWeight: 'bold', color: theme.text },
   centerSub: { fontSize: 12, color: theme.subtext },
