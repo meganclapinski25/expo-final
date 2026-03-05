@@ -12,7 +12,7 @@ export default function TransactionsScreen(){
     const [label, setLabel] = useState('');
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('Food');
-    const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Other'];
+    const CATEGORIES = ['Food', 'Gas', 'Shopping', 'Bills', 'Other'];
     // explain handleADD 
     
     const handleAdd = async () => {
