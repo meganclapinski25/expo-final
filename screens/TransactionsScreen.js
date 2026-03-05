@@ -1,5 +1,5 @@
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-import { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addTransaction, loadTransactions, removeTransaction } from '../slices/transactionSlice';
@@ -37,6 +37,10 @@ export default function TransactionsScreen({navigation}){
         await AsyncStorage.setItem('transactions', JSON.stringify(updated));
       };
 
+      useEffect(() => {
+        dispatch(loadTransactions());
+      }, []);
+
     return (
         <View style={styles.container}>
           <Text style={styles.title}>Transactions</Text>
@@ -62,9 +66,14 @@ export default function TransactionsScreen({navigation}){
             <TouchableOpacity style={styles.addBtn} onPress={handleAdd}>
             <Text style={styles.addBtnText}>+ Add Transaction</Text>
             </TouchableOpacity>
+            {status === 'loading' && <ActivityIndicator style={{ marginTop: 20 }} />}
+            {status === 'failed' && <Text style={{ color: 'red' }}>Failed to load transactions</Text>}
             <FlatList
             data={items}
             keyExtractor={item => item.id}
+            onRefresh={() => dispatch(loadTransactions())}
+            refreshing={status === 'loading'}
+            
             renderItem={({ item }) => (
             <TouchableOpacity onPress={() => navigation.navigate('TransactionDetail', { item })}>
               <View style={styles.row}>

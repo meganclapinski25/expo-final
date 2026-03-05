@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { loadTransactions } from './slices/transactionSlice';
 import { createStackNavigator } from '@react-navigation/stack';
 import TransactionDetailScreen from './screens/TransactionDetailScreen';
-
+import { ThemeProvider, createTheme } from '@rneui/themed';
 
 const Tab = createBottomTabNavigator();
 function AppLoader() {
@@ -31,9 +31,22 @@ function TransactionsStack() {
     </Stack.Navigator>
   );
 }
+
+const theme = createTheme({
+  lightColors: {
+    primary: '#000000',
+    secondary: '#888888',
+    background: '#ffffff',
+    error: '#e53935',
+    success: '#4CAF50',
+  },
+});
+
+
 export default function App() {
   return (
     <Provider store={store}>
+      <ThemeProvider theme={theme}>
       <AppLoader/>
       <NavigationContainer>
         <Tab.Navigator
@@ -54,6 +67,7 @@ export default function App() {
           <Tab.Screen name="Budget" component={BudgetScreen} />
         </Tab.Navigator>
       </NavigationContainer>
+      </ThemeProvider>
     </Provider>
   );
 }
