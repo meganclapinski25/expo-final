@@ -16,15 +16,27 @@ const colors = {
 
 export default function BudgetScreen(){
 
-    const [budgets, setBudgets] = useState('')
+    const [budget, setBudgets] = useState('')
     const {items} = useSelector(state => state.transactions);
     const [inputVal, setInputVal] = useState('');
-const [editing, setEditing] = useState(false);
-
+    const [editing, setEditing] = useState(false);
+    useEffect(() => {
+        AsyncStorage.getItem('monthlyBudget').then(val => {
+          if (val) setMonthlyBudget(val);
+        });
+      }, []);
     const byCategory = items.reduce((acc,t) =>{
         acc[t.category] = (acc[t.category] || 0) + t.amount;
         return acc;
     }, {});
+
+    const totalSpent = items.reduce((sum, t) => sum +t.amount, 0);
+    const remaining = (parseFloat(budget) || 0) - totalSpent;
+
+    const chartData = Object.entries(byCategory).map(([cat, amount]) =>({
+        value:amount,
+        color:colors[cat] || '#ccc',
+    }));
 
     
     return(
