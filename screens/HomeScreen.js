@@ -38,7 +38,15 @@ export default function HomeScreen(){
           value={startingBalance}
           onChangeText={(text) => setStartingBalance(text.replace(/[^0-9.]/g, ''))}
         />
-        
+        <TouchableOpacity style={styles.btn} onPress={handleSaveBalance}>
+          <Text style={styles.btnText}>Save</Text>
+        </TouchableOpacity>
+        </>
+    ) : (
+      <TouchableOpacity style={styles.btn} onPress={() => setEditing(true)}>
+        <Text style={styles.btnText}>Set Starting Balance</Text>
+      </TouchableOpacity>
+    )}
       </View>
     );
 }
