@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { PolarChart, Pie } from 'victory-native';
-import 'react-native-reanimated';
+
 
 const categories = ['Food', 'Gas', 'Shopping', 'Bills', 'Other'];
 const colors = {
